@@ -1,4 +1,4 @@
-import { MouseMoveDirection } from './mouse.types';
+import { MouseMoveDirectionEnum } from './mouse.types';
 import { isUndefined } from '../../utils/is-undefined';
 import { handleError } from '../../utils/handle-error';
 import { moveMouseUp } from './move-mouse-up';
@@ -7,7 +7,7 @@ import { moveMouseLeft } from './move-mouse-left';
 import { moveMouseRight } from './move-mouse-right';
 
 type MoveMouseF = (props?: {
-  direction: MouseMoveDirection;
+  direction: MouseMoveDirectionEnum;
   shiftNumber: number;
 }) => void;
 
@@ -28,16 +28,16 @@ export const moveMouse: MoveMouseF = (props) => {
   }
 
   switch (direction) {
-    case MouseMoveDirection.Up:
+    case MouseMoveDirectionEnum.Up:
       moveMouseUp(shiftNumber);
       break;
-    case MouseMoveDirection.Down:
+    case MouseMoveDirectionEnum.Down:
       moveMouseDown(shiftNumber);
       break;
-    case MouseMoveDirection.Left:
+    case MouseMoveDirectionEnum.Left:
       moveMouseLeft(shiftNumber);
       break;
-    case MouseMoveDirection.Right:
+    case MouseMoveDirectionEnum.Right:
       moveMouseRight(shiftNumber);
       break;
     default:
