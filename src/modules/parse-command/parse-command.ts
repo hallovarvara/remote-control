@@ -1,15 +1,17 @@
 import { convertStringToNumber } from '../../utils/convert-string-to-number';
 import { isNumber } from '../../utils/is-number';
+import { handleError } from '../../utils/handle-error';
+import { draw, DrawFiguresEnum } from '../drawing';
+import { COMMAND_PRINT_SCREEN, printScreen } from '../print-screen';
+
 import {
   moveMouse,
   MouseMoveDirectionEnum,
-  MOUSE_POSITION,
+  COMMAND_MOUSE_POSITION,
   getMousePosition,
 } from '../mouse';
-import { handleError } from '../../utils/handle-error';
-import { draw, DrawFiguresEnum } from '../drawing';
 
-export const parseCommand = (message: string): string | void => {
+export const parseCommand = async (message: string): Promise<string | void> => {
   const [command, numParam = 0, numParam2 = 0] = message.split(' ');
 
   switch (command) {
@@ -25,7 +27,7 @@ export const parseCommand = (message: string): string | void => {
 
       break;
     }
-    case MOUSE_POSITION:
+    case COMMAND_MOUSE_POSITION:
       return getMousePosition();
     case DrawFiguresEnum.Square:
     case DrawFiguresEnum.Rectangle:
@@ -40,6 +42,9 @@ export const parseCommand = (message: string): string | void => {
 
       draw({ figure: command, radiusOrWidth, height });
       break;
+    case COMMAND_PRINT_SCREEN: {
+      return await printScreen();
+    }
     default: {
       handleError({ message: `Command doesn't recognised: "${message}"` });
     }

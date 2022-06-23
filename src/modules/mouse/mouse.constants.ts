@@ -1,1 +1,1 @@
-export const MOUSE_POSITION = 'mouse_position';
+export const COMMAND_MOUSE_POSITION = 'mouse_position';

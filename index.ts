@@ -1,8 +1,7 @@
-import Jimp from 'jimp';
 import { httpServer } from './src/http_server';
 import { WebSocketServer } from 'ws';
 import { parseCommand } from './src/modules/parse-command';
-import { isUndefined } from './src/utils/is-undefined';
+import { isString } from './src/utils/is-string';
 
 const HTTP_PORT = 3000;
 
@@ -17,17 +16,13 @@ const websocketServer = new WebSocketServer({
 });
 
 websocketServer.on('connection', (ws) => {
-  ws.on('message', (rawData, isBinary) => {
+  ws.on('message', async (rawData, isBinary) => {
     console.log('received: %s', rawData);
     const command: string = '' + rawData;
-    const data = parseCommand(command);
+    const data = await parseCommand(command);
 
-    if (!isUndefined(data)) {
-      ws.send(data);
+    if (isString(data)) {
+      ws.send(`${data}\0`);
     }
   });
-});
-
-websocketServer.on('close', () => {
-  // close connection
 });

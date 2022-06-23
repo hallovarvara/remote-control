@@ -9,9 +9,12 @@
         "start:dev": "nodemon index.ts"
     },
     "author": "Varya Deviaterikova <hallovarvara@gmail.com>",
-    "keywords": ["node, websocket"],
+    "keywords": [
+        "node, websocket"
+    ],
     "license": "ISC",
     "devDependencies": {
+        "@types/jimp": "^0.2.28",
         "@types/ws": "^8.5.3",
         "nodemon": "^2.0.16",
         "prettier": "^2.7.1",
