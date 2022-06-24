@@ -1,5 +1,5 @@
 import { httpServer } from './src/http_server';
-import { WebSocketServer } from 'ws';
+import { createWebSocketStream, WebSocketServer } from 'ws';
 import { parseCommand } from './src/modules/parse-command';
 import { isString } from './src/utils/is-string';
 
@@ -16,13 +16,18 @@ const websocketServer = new WebSocketServer({
 });
 
 websocketServer.on('connection', (ws) => {
-  ws.on('message', async (rawData, isBinary) => {
-    console.log('received: %s', rawData);
-    const command: string = '' + rawData;
+  const wsStream = createWebSocketStream(ws, {
+    encoding: 'utf8',
+    decodeStrings: false,
+  });
+
+  wsStream.on('data', async (chunk) => {
+    const command = chunk.toString();
+    console.log('received: %s', command);
     const data = await parseCommand(command);
 
     if (isString(data)) {
-      ws.send(`${data}\0`);
+      wsStream.write(`${data}\0`);
     }
   });
 });
